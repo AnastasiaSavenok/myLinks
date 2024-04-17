@@ -36,7 +36,7 @@ class RegisterAPIView(mixins.CreateModelMixin, GenericAPIView):
 
     def post(self, request, *args, **kwargs):
         try:
-            user = CustomUser.objects.get(email=request.data.get('email', None))
+            user = CustomUser.objects.get(email=request.data.get('email'))
             if user:
                 return Response({'Email is already used'}, status=status.HTTP_401_UNAUTHORIZED)
         except CustomUser.DoesNotExist:
@@ -45,8 +45,10 @@ class RegisterAPIView(mixins.CreateModelMixin, GenericAPIView):
             user = serializer.save()
             if user:
                 token = random.randint(11111, 99999)
-                user.token = token
+                user.verify_token = token
+                user.set_password(user.password)
                 sending_mail(user.email, token)
+                user.save()
                 return Response({"Registration success. Please, verify email.":
                                 UserSerializer(user, context=self.get_serializer_context()).data},
                                 status=status.HTTP_201_CREATED)
@@ -60,8 +62,10 @@ class EmailVerify(GenericAPIView):
     permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
-        if request.user.token == request.token and request.token != 00000:
+        token = request.data.get('token')
+        if request.user.verify_token == token and token != 00000:
             request.user.is_verify = True
-            request.user.token = 00000
+            request.user.verify_token = 00000
+            request.user.save()
             return Response({'message': "Verify success."}, status=status.HTTP_200_OK)
         return Response({'message': "Verify failed."}, status=status.HTTP_401_UNAUTHORIZED)

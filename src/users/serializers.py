@@ -1,3 +1,4 @@
+from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 
 from src.users.models import CustomUser
@@ -42,9 +43,8 @@ class RegisterSerializer(serializers.ModelSerializer):
 
         def create(self, validated_data):
             user = CustomUser.objects.create_user(email=validated_data['email'],
-                                                  name=validated_data['name']
+                                                  password=validated_data['password']
                                                   )
-            user.set_password(validated_data['password'])
             user.save()
             return user
 
@@ -58,4 +58,4 @@ class UserSerializer(serializers.ModelSerializer):
 class EmailVerifySerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ('token',)
+        fields = ('verify_token',)

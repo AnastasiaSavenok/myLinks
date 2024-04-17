@@ -9,7 +9,7 @@ class CustomUser(AbstractUser):
 
     username = None
     email = models.EmailField(_('email address'), unique=True)
-    token = models.PositiveIntegerField(default=00000)
+    verify_token = models.PositiveIntegerField(default=00000)
     is_verify = models.BooleanField(_('verify'), default=False)
 
     USERNAME_FIELD = 'email'
