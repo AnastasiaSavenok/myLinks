@@ -5,21 +5,21 @@ from rest_framework import status, mixins, views
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 from src.core.emails import sending_mail
 from src.users.models import CustomUser
 from src.users.serializers import LoginSerializer, RegisterSerializer, UserSerializer, EmailVerifySerializer
 
 
-class LoginAPIView(mixins.CreateModelMixin, GenericAPIView):
+class LoginAPIView(TokenObtainPairView):
     serializer_class = LoginSerializer
-    queryset = CustomUser.objects.all()
 
-    def post(self, request):
+    def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
-        login(request, CustomUser.objects.get(email=serializer.data['email']))
-        return Response({'message': "Login successful"}, status=status.HTTP_200_OK)
+        login(request, CustomUser.objects.get(email=request.data.get('email')))
+        return Response(serializer.validated_data, status=status.HTTP_200_OK)
 
 
 class LogoutAPIView(views.APIView):
@@ -49,7 +49,7 @@ class RegisterAPIView(mixins.CreateModelMixin, GenericAPIView):
                 user.set_password(user.password)
                 sending_mail(user.email, token)
                 user.save()
-                return Response({"Registration success. Please, verify email.":
+                return Response({"Registration success. Verify code sent to email.":
                                 UserSerializer(user, context=self.get_serializer_context()).data},
                                 status=status.HTTP_201_CREATED)
             else:

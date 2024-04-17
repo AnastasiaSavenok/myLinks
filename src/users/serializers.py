@@ -1,35 +1,18 @@
-from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 from src.users.models import CustomUser
 
 
-class LoginSerializer(serializers.Serializer):
-    email = serializers.CharField(max_length=255)
-    password = serializers.CharField(max_length=128, write_only=True)
+class LoginSerializer(TokenObtainPairSerializer):
 
-    class Meta:
-        model = CustomUser
-        fields = ('email', 'password')
-        extra_kwargs = {'password': {'write_only': True}}
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
 
-    def validate(self, data):
-        email = data.get('email')
-        password = data.get('password')
-        if email is None:
-            raise serializers.ValidationError(
-                'An email address is required to log in.'
-            )
-        if password is None:
-            raise serializers.ValidationError(
-                'A password is required to log in.'
-            )
-        user = CustomUser.objects.get(email=email)
-        if user is None:
-            raise serializers.ValidationError(
-                'A user with this email and password is not found.'
-            )
-        return data
+        token['email'] = user.email
+
+        return token
 
 
 class RegisterSerializer(serializers.ModelSerializer):
