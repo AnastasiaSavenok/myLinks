@@ -23,10 +23,14 @@ from drf_spectacular.views import (
 )
 from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView, TokenVerifyView
 
-from src.users.views import LogoutAPIView, LoginAPIView, RegisterAPIView, EmailVerify
+from src.users.views import LogoutAPIView, LoginAPIView, RegisterAPIView, EmailVerify, ChangePasswordAPIView, \
+    ForgotPasswordAPIView, RecoverPasswordAPIView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/v1/change-password/', ChangePasswordAPIView.as_view(), name='change_password'),
+    path('api/v1/forgot-password/', ForgotPasswordAPIView.as_view(),  name='forgot_password'),
+    path('api/v1/recover-password/', RecoverPasswordAPIView.as_view(),  name='forgot_password'),
     path('api/v1/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/v1/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/v1/logout/', LogoutAPIView.as_view(), name='logging_out'),

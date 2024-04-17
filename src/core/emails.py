@@ -4,14 +4,13 @@ import smtplib
 from config.settings import EMAIL_ADDRESS, EMAIL_PASSWORD
 
 
-def sending_mail(user, token):
+def send_email(user, text):
     host = EMAIL_ADDRESS
     password = EMAIL_PASSWORD
     subject = "Код подтверждения"
     to = user
     charset = 'Content-Type: text/plain; charset=utf-8'
     mime = 'MIME-Version: 1.0'
-    text = f"Verify code: {token}"
     body = "\r\n".join((f"From: {host}", f"To: {to}",
                         f"Subject: {subject}", mime, charset, "", text))
 
