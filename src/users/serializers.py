@@ -77,7 +77,7 @@ class ForgotPasswordSerializer(serializers.Serializer):
     email = serializers.CharField(max_length=255)
 
     def validate(self, data):
-        email = data.get('email', None)
+        email = data.get('email')
         if email is None:
             raise serializers.ValidationError(
                 'An email address is required to log in.'
@@ -90,7 +90,7 @@ class RecoverPasswordSerializer(serializers.Serializer):
     verify_token = serializers.CharField(max_length=10)
 
     def validate(self, data):
-        email = data.get('email', None)
+        email = data.get('email')
         if email is None:
             raise serializers.ValidationError(
                 'An email address is required to log in.'

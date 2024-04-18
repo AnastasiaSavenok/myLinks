@@ -1,3 +1,6 @@
 from django.contrib import admin
 
-# Register your models here.
+from src.links.models import Link, Collection
+
+admin.site.register(Link)
+admin.site.register(Collection)

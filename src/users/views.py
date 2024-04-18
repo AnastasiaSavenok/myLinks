@@ -1,7 +1,6 @@
 import random
 
 from django.contrib.auth import login, logout
-from django.shortcuts import redirect
 from rest_framework import status, mixins, views
 from rest_framework.generics import GenericAPIView
 from rest_framework.permissions import IsAuthenticated
@@ -116,9 +115,6 @@ class RecoverPasswordAPIView(GenericAPIView):
         token = request.data.get('verify_token', 00000)
         try:
             user = CustomUser.objects.get(email=request.data.get('email', None))
-            print(user.verify_token)
-            print(token)
-            print(str(user.verify_token) == token and token != 00000)
             if str(user.verify_token) == token and token != 00000:
                 new_password = str(random.randint(111111111, 999999999))
                 user.set_password(new_password)
