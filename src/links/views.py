@@ -92,7 +92,8 @@ class CollectionViewSet(viewsets.ModelViewSet):
 
 
 class TopUsersView(APIView):
-    def get(self, request):
+    @staticmethod
+    def get(request):
         with connection.cursor() as cursor:
             cursor.execute('''
             SELECT
@@ -130,12 +131,12 @@ class TopUsersView(APIView):
         result = [
             {
                 "email": row[0],
+                "count_links": row[6],
                 "website": row[1],
                 "book": row[2],
                 "article": row[3],
                 "music": row[4],
-                "video": row[5],
-                "count_links": row[6]
+                "video": row[5]
             }
             for row in data
         ]
