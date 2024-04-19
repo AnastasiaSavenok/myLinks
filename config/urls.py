@@ -26,7 +26,7 @@ from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
 
 from src.users.views import LogoutAPIView, LoginAPIView, RegisterAPIView, EmailVerify, ChangePasswordAPIView, \
     ForgotPasswordAPIView, RecoverPasswordAPIView
-from src.links.views import LinkViewSet, CollectionViewSet
+from src.links.views import LinkViewSet, CollectionViewSet, TopUsersView
 
 router = DefaultRouter()
 router.register(r'links', LinkViewSet, basename='link')
@@ -46,19 +46,20 @@ urlpatterns = [
     path('api/v1/login/', LoginAPIView.as_view(), name='logging_in'),
     path('api/v1/register/', RegisterAPIView.as_view(), name="sign_up"),
     path('api/v1/verify-email/', EmailVerify.as_view(), name='verify_email'),
+    path('api/v1/top-ten-users/', TopUsersView.as_view(), name='top_ten_users'),
 
     # Links API
     path('api/v1/', include(router.urls)),
 
     # Swagger API
-    path('api/v1/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/v1/docs/download/', SpectacularAPIView.as_view(), name='schema'),
     path(
-        'api/v1/schema/swagger-ui/',
+        'api/v1/docs/',
         SpectacularSwaggerView.as_view(url_name='schema'),
         name='swagger-ui'
     ),
     path(
-        'api/v1/schema/redoc/',
+        'api/v1/docs/specific/',
         SpectacularRedocView.as_view(url_name='schema'),
         name='redoc'
     ),
