@@ -26,10 +26,11 @@ from rest_framework_simplejwt.views import TokenRefreshView, TokenObtainPairView
 
 from src.users.views import LogoutAPIView, LoginAPIView, RegisterAPIView, EmailVerify, ChangePasswordAPIView, \
     ForgotPasswordAPIView, RecoverPasswordAPIView
-from src.links.views import LinkViewSet
+from src.links.views import LinkViewSet, CollectionViewSet
 
 router = DefaultRouter()
 router.register(r'links', LinkViewSet, basename='link')
+router.register(r'collections', CollectionViewSet, basename='collection')
 
 urlpatterns = [
     path('admin/', admin.site.urls),

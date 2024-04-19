@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 from rest_framework import serializers
-from src.links.models import Link, LinkType
+from src.links.models import Link, LinkType, Collection
 
 
 class LinkSerializer(serializers.ModelSerializer):
@@ -89,3 +89,33 @@ class CreateLinkSerializer(serializers.ModelSerializer):
         }
 
         return Link.objects.create(**data)
+
+
+class CollectionListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Collection
+        fields = ('uuid', 'title', 'description')
+
+
+class CollectionCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Collection
+        fields = ('title', 'description')
+
+
+class CollectionDetailSerializer(serializers.ModelSerializer):
+    links = ListLinkSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Collection
+        fields = ('title', 'description', 'links')
+
+
+class CollectionAddLinkSerializer(serializers.ModelSerializer):
+    links = ListLinkSerializer(many=True, read_only=True)
+    link_id = serializers.CharField(required=True)
+
+    class Meta:
+        model = Collection
+        fields = ('link_id', 'title', 'description', 'links')
+        read_only_fields = ('title', 'description', 'links')
