@@ -25,6 +25,7 @@ Create a .env file and specify the following variables in it:
 - POSTGRES_PORT
 - EMAIL_ADDRESS (address from which the verify code will be sent)
 - EMAIL_PASSWORD (Password for applications)
+
 Launch the application in one of two ways:
 - Build and run Docker containers: docker-compose up --build
 - Install requirements: pip install -r requirements.txt and run: python manage.py runserver 
