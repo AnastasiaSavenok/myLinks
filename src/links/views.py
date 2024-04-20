@@ -1,16 +1,20 @@
-from django.db import connection
-from rest_framework import viewsets
+from faker import Faker
+import uuid
+
+from django.db import connection, IntegrityError
+from rest_framework import viewsets, status
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from src.links.models import Link, Collection
-from .serializers import LinkSerializer, UpdateLinkRequestSerializer, \
+from src.links.models import Link, Collection, LinkType
+from src.links.serializers import LinkSerializer, UpdateLinkRequestSerializer, \
     ListLinkSerializer, CreateLinkSerializer, CollectionListSerializer, CollectionCreateSerializer, \
     CollectionDetailSerializer, CollectionAddLinkSerializer
 
 from src.core.permissions import IsVerified, IsOwner
+from src.users.models import CustomUser
 
 
 class LinkViewSet(viewsets.ModelViewSet):
@@ -92,6 +96,9 @@ class CollectionViewSet(viewsets.ModelViewSet):
 
 
 class TopUsersView(APIView):
+    """Get 10 users who have the maximum number of saved links.
+    If the number of links is the same for several users, get those who were previously registered"""
+
     @staticmethod
     def get(request):
         with connection.cursor() as cursor:
@@ -122,6 +129,7 @@ class TopUsersView(APIView):
                         author_id
                 ) lc ON cu.id = lc.author_id
             ORDER BY
+                lc.count_links IS NULL,
                 lc.count_links DESC, 
                 cu.date_joined ASC
             LIMIT 10;
@@ -142,3 +150,34 @@ class TopUsersView(APIView):
         ]
 
         return Response(result)
+
+
+class TestDataView(APIView):
+    """Create test users and links"""
+
+    @staticmethod
+    def post(request):
+        fake = Faker()
+
+        for _ in range(100):
+            CustomUser.objects.create(
+                email=fake.email(),
+                is_verify=True
+            )
+
+        for _ in range(500):
+            try:
+                link_type = fake.random_element(LinkType.choices)[0]
+                Link.objects.create(
+                    uuid=uuid.uuid4(),
+                    title=fake.sentence(nb_words=5),
+                    description=fake.paragraph(nb_sentences=3),
+                    url=fake.url(),
+                    image=fake.image_url(),
+                    link_type=link_type,
+                    author=CustomUser.objects.order_by('?').first()
+                )
+            except IntegrityError:
+                pass
+
+        return Response({'message': 'Test data created successfully.'}, status=status.HTTP_201_CREATED)

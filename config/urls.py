@@ -25,7 +25,7 @@ from rest_framework.routers import DefaultRouter
 
 from src.users.views import LogoutAPIView, LoginAPIView, RegisterAPIView, EmailVerify, ChangePasswordAPIView, \
     ForgotPasswordAPIView, RecoverPasswordAPIView
-from src.links.views import LinkViewSet, CollectionViewSet, TopUsersView
+from src.links.views import LinkViewSet, CollectionViewSet, TopUsersView, TestDataView
 
 router = DefaultRouter()
 router.register(r'links', LinkViewSet, basename='link')
@@ -46,6 +46,7 @@ urlpatterns = [
 
     # SQL task API
     path('api/v1/top-ten-users/', TopUsersView.as_view(), name='top_ten_users'),
+    path('api/v1/test-data/', TestDataView.as_view(), name='test_data'),
 
     # Links API
     path('api/v1/', include(router.urls)),

@@ -1,4 +1,3 @@
-import os
 import smtplib
 
 from config.settings import EMAIL_ADDRESS, EMAIL_PASSWORD
