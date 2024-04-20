@@ -1,13 +1,13 @@
 This project is a web application that allows users to create and add links to collections, from which the service will automatically collect information. Key features include:
 
-User registration with verification via email
-Authentication using JWT token
-Changing your password and recovering your password via email
-Create, view, edit and delete links
-Create, view, edit, and delete collections
-API documentation in Swagger
-Filling with test data using a script
-Endpoint with complex SQL query
+- User registration with verification via email
+- Authentication using JWT token
+- Changing your password and recovering your password via email
+- Create, view, edit and delete links
+- Create, view, edit, and delete collections
+- API documentation in Swagger
+- Filling with test data using a script
+- Endpoint with complex SQL query
 
 **To run this application locally, follow these steps:**
 
