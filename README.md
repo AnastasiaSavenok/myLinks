@@ -28,5 +28,6 @@ Create a .env file and specify the following variables in it:
 
 Launch the application in one of two ways:
 - Build and run Docker containers: docker-compose up --build
-- Install requirements: pip install -r requirements.txt and run: python manage.py runserver 
+- Install requirements: pip install -r requirements.txt and run: python manage.py runserver
+  
 Open the swagger application documentation in a browser: http://localhost:8000/api/v1/docs/
