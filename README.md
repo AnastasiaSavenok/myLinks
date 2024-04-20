@@ -19,7 +19,7 @@ Create a .env file and specify the following variables in it:
 
 - SECRET_KEY (for example: django-insecure-vuwdf%4f$uvhfg!9w+2ikx(zumsvp9o&g4ep3-gch)s=+(*th+ )
 - DEBUG
-- DJANGO_ALLOWED_HOSTS (for example: 0.0.0.0)
+- DJANGO_ALLOWED_HOSTS
 - POSTGRES_ENGINE = django.db.backends.postgresql_psycopg2
 - POSTGRES_NAME
 - POSTGRES_USER
