@@ -11,13 +11,13 @@ This project is a web application that allows users to create and add links to c
 
 **To run this application locally, follow these steps:**
 
-Clone the repository: git clone https://github.com/AnastasiaSavenok/xOneProject.git
+Clone the repository: git clone https://github.com/AnastasiaSavenok/myLinks.git
 
-Go to the project directory: cd xOneProject/
+Go to the project directory: cd myLinks/
 
 Create a .env file and specify the following variables in it:
 
-- SECRET_KEY (for example: django-insecure-vuwdf%4f$uvhfg!9w+2ikx(zumsvp9o&g4ep3-gch)s=+(*th+ )
+- SECRET_KEY
 - DEBUG
 - DJANGO_ALLOWED_HOSTS
 - POSTGRES_ENGINE = django.db.backends.postgresql_psycopg2
